@@ -111,6 +111,33 @@ export const asyncRoutes = [
         name: 'ArticleList',
         component: () => import('@/views/article/index'),
         meta: { title: '文章列表', icon: 'example', roles: ['10011001'] }
+      },
+      {
+        path: 'add',
+        name: 'ArticleAdd',
+        hidden: true,
+        component: () => import('@/views/article/form'),
+        meta: { title: '文章新增', icon: 'example', roles: ['10011001'], type: 1 }
+      },
+      {
+        path: 'edit/:id',
+        name: 'ArticleEdit',
+        hidden: true,
+        component: () => import('@/views/article/form'),
+        meta: { title: '文章编辑', icon: 'example', roles: ['10011002'], type: 2 }
+      },
+      {
+        path: 'detail',
+        name: 'ArticleDetail',
+        hidden: true,
+        component: () => import('@/views/article/form'),
+        meta: { title: '文章详情', icon: 'example', roles: ['10011001'], type: 3 }
+      },
+      {
+        path: 'recycle',
+        name: 'ArticleRecycle',
+        component: () => import('@/views/article/recycle'),
+        meta: { title: '文章回收站', icon: 'example', roles: ['10011005'] }
       }
     ]
   },

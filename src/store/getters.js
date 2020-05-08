@@ -9,6 +9,7 @@ const getters = {
   categoryData: state => state.filterData.categoryData,
   tagData: state => state.filterData.tagData,
   accountStatus: state => state.filterData.accountStatus,
-  typeData: state => state.filterData.typeData
+  typeData: state => state.filterData.typeData,
+  loading: state => state.settings.loading
 }
 export default getters

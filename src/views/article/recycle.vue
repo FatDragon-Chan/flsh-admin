@@ -4,10 +4,10 @@
       <div class="app-search">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-input :disabled="loading" v-model="searchForm.keyword" @change="getData" size="mini" placeholder="请输入文章标题模糊搜索" />
+            <el-input v-model="searchForm.keyword" :disabled="loading" size="mini" placeholder="请输入文章标题模糊搜索" @change="getData" />
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-select :disabled="loading" v-model="searchForm.categoryId" clearable style="width: 100%" size="mini" placeholder="请选择文章分类" @change="getData">
+            <el-select v-model="searchForm.categoryId" :disabled="loading" clearable style="width: 100%" size="mini" placeholder="请选择文章分类" @change="getData">
               <el-option
                 v-for="item in categoryData"
                 :key="item.cat_name"
@@ -16,20 +16,7 @@
               />
             </el-select>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-select :disabled="loading" v-model="searchForm.status" clearable style="width: 100%" size="mini" placeholder="请选择文章状态" @change="getData">
-              <el-option
-                v-for="item in articleStatus"
-                :key="item.label"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-col>
         </el-row>
-      </div>
-      <div class="app-button">
-        <el-button size="mini" type="primary" @click="$router.push({name: 'ArticleAdd'})">新增</el-button>
       </div>
       <div class="app-table">
         <el-table v-loading="loading" :data="tableData" border size="mini" style="width: 100%">
@@ -52,10 +39,8 @@
           <el-table-column label="操作" align="center" width="240">
             <template slot-scope="scope">
               <el-button v-permission="['10011001']" size="mini" type="text">预览</el-button>
-              <el-button v-if="scope.row.art_status !== 1" v-permission="['10011002']" size="mini" type="text">编辑</el-button>
-              <el-button v-if="scope.row.art_status !== 0" v-permission="['10011004']" size="mini" type="text" @click="changeStatus(scope.row,0)">{{ scope.row.art_status===1?'下架':'上架' }}</el-button>
               <el-button v-permission="['10011001']" size="mini" type="text">详情</el-button>
-              <el-button v-if="scope.row.art_status !== 0 && scope.row.art_status === 2" v-permission="['10011003']" size="mini" type="text" @click="changeStatus(scope.row)">删除</el-button>
+              <el-button v-permission="['10011005']" size="mini" type="text">恢复</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -76,14 +61,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { articleStatus } from '@/utils/dictionary'
-import { getArticleList, changeArticleStatus } from '@/api/blog'
+import { getArticleList } from '@/api/blog'
 export default {
   name: 'Index',
   data() {
     return {
       searchForm: {
         keyword: '',
-        status: '',
+        status: 0,
         categoryId: '',
         page: 1,
         pageSize: 10,
@@ -114,33 +99,8 @@ export default {
         this.searchForm.isLastPage = isLastPage
       })
     },
-    changeStatus(row, type = 1) {
-      let typeMessage, status
-      if (type) {
-        typeMessage = '此操作将删除该文章, 是否继续?'
-        status = 0
-      } else {
-        typeMessage = `此操作将${row.art_status === 1 ? '下架' : '上架'}该文章, 是否继续?`
-        status = row.art_status === 1 ? 2 : 1
-      }
-      this.$confirm(typeMessage, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        changeArticleStatus({ art_id: row.art_id, status }).then(res => {
-          console.log(res)
-          if (res.resCode === '0000') {
-            this.$message({
-              message: res.msg || '操作成功',
-              type: 'success'
-            })
-            this.getData()
-          }
-        })
-      }).catch(() => {
+    recycleArticle(row) {
 
-      })
     }
   }
 }

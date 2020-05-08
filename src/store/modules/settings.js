@@ -5,7 +5,8 @@ const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 const state = {
   showSettings: showSettings,
   fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo
+  sidebarLogo: sidebarLogo,
+  loading: false
 }
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value
     }
+  },
+  SET_LOADING: (state, boolean) => {
+    state.loading = boolean
   }
 }
 

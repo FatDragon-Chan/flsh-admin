@@ -19,7 +19,22 @@ import request from '@/utils/request' // axios服务
 
 import vPermission from '@/utils/v-permission' // 引入v-permission
 
+// 引入lodash
+import _ from 'lodash'
+Vue.prototype._ = _
+
+// 引入方法
+import { getValueToKey } from '@/utils/index'
+
+Vue.prototype.$getValueToKey = getValueToKey
 Vue.prototype.$http = request
+
+// 引入富文本
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

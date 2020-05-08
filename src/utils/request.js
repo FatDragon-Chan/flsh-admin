@@ -13,8 +13,8 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    store.commit('settings/SET_LOADING', true)
     // do something before request is sent
-
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -24,6 +24,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
+    store.commit('settings/SET_LOADING', false)
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
@@ -43,6 +44,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    store.commit('settings/SET_LOADING', false)
     const res = response.data
     // if the custom code is not 0000, it is judged as an error.
     if (res.resCode !== '0000') {

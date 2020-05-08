@@ -1,35 +1,7 @@
 import { getAllClassify } from '@/api/user'
 const state = {
   categoryData: [],
-  tagData: [],
-  typeData: [
-    {
-      value: 0,
-      label: '已删除'
-    },
-    {
-      value: 1,
-      label: '已发布'
-    },
-    {
-      value: 0,
-      label: '已下架'
-    }
-  ],
-  accountStatus: [
-    {
-      value: 1,
-      label: '启用'
-    },
-    {
-      value: 2,
-      label: '禁用'
-    },
-    {
-      value: 0,
-      label: '已删除'
-    }
-  ]
+  tagData: []
 }
 
 const mutations = {

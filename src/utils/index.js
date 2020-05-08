@@ -1,3 +1,4 @@
+import dictionary from './dictionary'
 /**
  * Created by PanJiaChen on 16/11/18.
  */
@@ -104,4 +105,9 @@ export function param2Obj(url) {
         .replace(/\+/g, ' ') +
       '"}'
   )
+}
+
+export function getValueToKey(arrName, data) {
+  const obj = this._.find(dictionary[arrName], data)
+  return obj ? obj.label : ''
 }
