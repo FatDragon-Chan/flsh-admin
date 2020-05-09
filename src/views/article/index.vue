@@ -4,10 +4,10 @@
       <div class="app-search">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-input :disabled="loading" v-model="searchForm.keyword" @change="getData" size="mini" placeholder="请输入文章标题模糊搜索" />
+            <el-input v-model="searchForm.keyword" :disabled="loading" size="mini" placeholder="请输入文章标题模糊搜索" @change="getData" />
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-select :disabled="loading" v-model="searchForm.categoryId" clearable style="width: 100%" size="mini" placeholder="请选择文章分类" @change="getData">
+            <el-select v-model="searchForm.categoryId" :disabled="loading" clearable style="width: 100%" size="mini" placeholder="请选择文章分类" @change="getData">
               <el-option
                 v-for="item in categoryData"
                 :key="item.cat_name"
@@ -17,7 +17,7 @@
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-select :disabled="loading" v-model="searchForm.status" clearable style="width: 100%" size="mini" placeholder="请选择文章状态" @change="getData">
+            <el-select v-model="searchForm.status" :disabled="loading" clearable style="width: 100%" size="mini" placeholder="请选择文章状态" @change="getData">
               <el-option
                 v-for="item in articleStatus"
                 :key="item.label"
@@ -29,7 +29,7 @@
         </el-row>
       </div>
       <div class="app-button">
-        <el-button size="mini" type="primary" @click="$router.push({name: 'ArticleAdd'})">新增</el-button>
+        <el-button v-permission="['10011000']" size="mini" type="primary" @click="$router.push({name: 'ArticleAdd'})">新增</el-button>
       </div>
       <div class="app-table">
         <el-table v-loading="loading" :data="tableData" border size="mini" style="width: 100%">
@@ -44,7 +44,7 @@
               </el-image>
             </template>
           </el-table-column>
-          <el-table-column prop="art_content" label="文章内容" align="center" />
+          <el-table-column prop="art_content" label="文章内容" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="cat_name" label="文章分类" align="center" />
           <el-table-column prop="create_time" label="创建时间" align="center" />
           <el-table-column prop="update_time" label="更新时间" align="center" />
@@ -52,9 +52,9 @@
           <el-table-column label="操作" align="center" width="240">
             <template slot-scope="scope">
               <el-button v-permission="['10011001']" size="mini" type="text">预览</el-button>
-              <el-button v-if="scope.row.art_status !== 1" v-permission="['10011002']" size="mini" type="text">编辑</el-button>
-              <el-button v-if="scope.row.art_status !== 0" v-permission="['10011004']" size="mini" type="text" @click="changeStatus(scope.row,0)">{{ scope.row.art_status===1?'下架':'上架' }}</el-button>
-              <el-button v-permission="['10011001']" size="mini" type="text">详情</el-button>
+              <el-button v-if="scope.row.art_status !== 1" v-permission="['10011002']" size="mini" type="text" @click="enterForm(scope.row,2)">编辑</el-button>
+              <el-button v-if="scope.row.art_status !== 0" v-permission="['10011004']" size="mini" type="text" @click="changeStatus(scope.row,1)">{{ scope.row.art_status===1?'下架':'上架' }}</el-button>
+              <el-button v-permission="['10011001']" size="mini" type="text" @click="enterForm(scope.row,3)">详情</el-button>
               <el-button v-if="scope.row.art_status !== 0 && scope.row.art_status === 2" v-permission="['10011003']" size="mini" type="text" @click="changeStatus(scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -77,6 +77,7 @@
 import { mapGetters } from 'vuex'
 import { articleStatus } from '@/utils/dictionary'
 import { getArticleList, changeArticleStatus } from '@/api/blog'
+import { parseTime } from '@/utils/index'
 export default {
   name: 'Index',
   data() {
@@ -102,11 +103,14 @@ export default {
     this.getData()
   },
   methods: {
+    // 获取数据
     getData() {
       getArticleList(this.searchForm).then(res => {
         const { blogData, total, lastPage, isLastPage } = res.data
         this.tableData = blogData.map(item => {
           item.statusName = this.$getValueToKey('articleStatus', { value: item.art_status })
+          item.create_time = parseTime(item.create_time)
+          item.update_time = parseTime(item.update_time)
           return item
         })
         this.searchForm.total = total
@@ -114,14 +118,15 @@ export default {
         this.searchForm.isLastPage = isLastPage
       })
     },
-    changeStatus(row, type = 1) {
+    // 修改文件状态 type: 不传默认删除 1-上下架
+    changeStatus(row, type = 0) {
       let typeMessage, status
       if (type) {
-        typeMessage = '此操作将删除该文章, 是否继续?'
-        status = 0
-      } else {
         typeMessage = `此操作将${row.art_status === 1 ? '下架' : '上架'}该文章, 是否继续?`
         status = row.art_status === 1 ? 2 : 1
+      } else {
+        typeMessage = '此操作将删除该文章, 是否继续?'
+        status = 0
       }
       this.$confirm(typeMessage, '提示', {
         confirmButtonText: '确定',
@@ -139,8 +144,18 @@ export default {
           }
         })
       }).catch(() => {
-
       })
+    },
+    // 前往表单处理文章
+    enterForm(row, type) {
+      switch (type) {
+        case 2:
+          this.$router.push(`/article/edit/${row.art_id}`)
+          break
+        case 3:
+          this.$router.push(`/article/detail/${row.art_id}`)
+          break
+      }
     }
   }
 }

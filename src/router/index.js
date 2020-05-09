@@ -127,7 +127,7 @@ export const asyncRoutes = [
         meta: { title: '文章编辑', icon: 'example', roles: ['10011002'], type: 2 }
       },
       {
-        path: 'detail',
+        path: 'detail/:id',
         name: 'ArticleDetail',
         hidden: true,
         component: () => import('@/views/article/form'),

@@ -47,7 +47,7 @@ service.interceptors.response.use(
     store.commit('settings/SET_LOADING', false)
     const res = response.data
     // if the custom code is not 0000, it is judged as an error.
-    if (res.resCode !== '0000') {
+    if (res.resCode !== '0000' && response.request.responseURL !== 'https://up-z2.qiniup.com/') {
       Message({
         message: res.msg || 'Error',
         type: 'error',
