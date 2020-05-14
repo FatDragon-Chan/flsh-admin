@@ -62,6 +62,7 @@
 import { mapGetters } from 'vuex'
 import { articleStatus } from '@/utils/dictionary'
 import { getArticleList } from '@/api/blog'
+import { parseTime } from '@/utils/index'
 export default {
   name: 'Index',
   data() {
@@ -92,6 +93,8 @@ export default {
         const { blogData, total, lastPage, isLastPage } = res.data
         this.tableData = blogData.map(item => {
           item.statusName = this.$getValueToKey('articleStatus', { value: item.art_status })
+          item.create_time = parseTime(item.create_time)
+          item.update_time = parseTime(item.update_time)
           return item
         })
         this.searchForm.total = total
