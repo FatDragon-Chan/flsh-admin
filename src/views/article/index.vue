@@ -37,7 +37,7 @@
           <el-table-column prop="art_desc" label="文章副标题" width="180" align="center" />
           <el-table-column prop="art_cover" label="文章主图" align="center">
             <template slot-scope="scope">
-              <el-image :src="scope.row.art_cover" lazy>
+              <el-image :src="scope.row.art_cover" lazy :preview-src-list="[scope.row.art_cover]">
                 <div slot="placeholder" class="image-slot">
                   加载中<span class="dot">...</span>
                 </div>
@@ -54,7 +54,7 @@
               <el-button v-permission="['10011001']" size="mini" type="text">预览</el-button>
               <el-button v-if="scope.row.art_status !== 1" v-permission="['10011002']" size="mini" type="text" @click="enterForm(scope.row,2)">编辑</el-button>
               <el-button v-if="scope.row.art_status !== 0" v-permission="['10011004']" size="mini" type="text" @click="changeStatus(scope.row,1)">{{ scope.row.art_status===1?'下架':'上架' }}</el-button>
-              <el-button v-permission="['10011001']" size="mini" type="text" @click="enterForm(scope.row,3)">详情</el-button>
+              <el-button v-permission="['10011001']" size="mini" type="text" @click="enterForm(scope.row,3)">详情</el-button>//
               <el-button v-if="scope.row.art_status !== 0 && scope.row.art_status === 2" v-permission="['10011003']" size="mini" type="text" @click="changeStatus(scope.row)">删除</el-button>
             </template>
           </el-table-column>
