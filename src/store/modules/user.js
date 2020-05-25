@@ -52,19 +52,20 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log(response)
         const { data } = response
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        const { user_name, role_name } = data
+        const { userName, roleName } = data
         const roles = filterRoles(data.roles)
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
         commit('SET_ROLES', roles)
-        commit('SET_NAME', user_name)
-        commit('SET_AVATAR', role_name)
+        commit('SET_NAME', userName)
+        commit('SET_AVATAR', roleName)
         resolve(filterRoles(data.roles))
       }).catch(error => {
         reject(error)
@@ -99,7 +100,7 @@ const actions = {
 function filterRoles(roles) {
   const res = []
   roles.forEach(role => {
-    res.push(role.permission_num)
+    res.push(role.permissionNum)
     if (role.children) {
       const tmp = filterRoles(role.children)
       res.push(...tmp)

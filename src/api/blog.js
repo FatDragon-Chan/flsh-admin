@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function getArticleList(params) {
+export function getArticleList(data) {
   return request({
     url: '/blog/selective',
     method: 'post',
-    params
+    data
   })
 }
 

@@ -3,10 +3,10 @@
     <el-card class="app-card">
       <el-form ref="articleForm" size="mini" :model="articleForm" label-width="100px" class="app-el-form">
         <el-form-item label="文章标题">
-          <el-input :disabled="isDisabled" v-model="articleForm.art_title" />
+          <el-input :disabled="isDisabled" v-model="articleForm.artTitle" />
         </el-form-item>
         <el-form-item label="文章副标题">
-          <el-input :disabled="isDisabled" v-model="articleForm.art_desc" />
+          <el-input :disabled="isDisabled" v-model="articleForm.artDesc" />
         </el-form-item>
         <el-form-item label="文章主图 ">
           <div class="avatar-wrap">
@@ -24,18 +24,18 @@
           </div>
         </el-form-item>
         <el-form-item label="文章分类">
-          <el-select :disabled="isDisabled" v-model="articleForm.cat_id" clearable style="width: 100%" size="mini" placeholder="请选择文章分类">
+          <el-select :disabled="isDisabled" v-model="articleForm.catId" clearable style="width: 100%" size="mini" placeholder="请选择文章分类">
             <el-option
               v-for="item in categoryData"
-              :key="item.cat_name"
-              :label="item.cat_name"
-              :value="item.cat_id"
+              :key="item.catName"
+              :label="item.catName"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
         <el-form-item>
           <div class="app-editor">
-            <mavon-editor :disabled="isDisabled"  v-model="articleForm.art_content" :editable="type !== 3" :default-open="type === 3?'preview':'edit'" :toolbars="toolbars" code-style="monokai-sublime" :subfield="false" />
+            <mavon-editor :disabled="isDisabled"  v-model="articleForm.artContent" :editable="type !== 3" :default-open="type === 3?'preview':'edit'" :toolbars="toolbars" code-style="monokai-sublime" :subfield="false" />
           </div>
         </el-form-item>
         <el-form-item>
@@ -60,12 +60,12 @@ export default {
       type: '',
       toolbars,
       articleForm: {
-        art_title: '',
-        art_desc: '',
-        art_content: '',
-        art_cover: '',
-        cat_id: '',
-        art_id: this.$route.params.id || ''
+        artTitle: '',
+        artDesc: '',
+        artContent: '',
+        artCover: '',
+        catId: '',
+        artId: this.$route.params.id || ''
       },
       postData: {},
       imgUrl: ''
@@ -80,17 +80,16 @@ export default {
   mounted() {
     this.type = this.$route.meta.type
     if (this.type !== 1) {
-      this.getArticleData({ art_id: this.$route.params.id, page: 1, pageSize: 1 })
+      this.getArticleData({ artId: this.$route.params.id, page: 1, pageSize: 1 })
     }
   },
   methods: {
     // 根据id获取文章详情
     getArticleData(params) {
       getArticleList(params).then(res => {
-        console.log(res)
         const blogData = res.data.blogData[0]
         this.articleForm = blogData
-        this.imgUrl = blogData.art_cover
+        this.imgUrl = blogData.artCover
       })
     },
     // 上传图片
@@ -116,7 +115,7 @@ export default {
       form.append('token', token)
       this.$http.post('https://up-z2.qiniup.com', form).then(res => {
         this.imgUrl = `http://image.chenzian.cn/${res.key}`
-        this.articleForm.art_cover = this.imgUrl
+        this.articleForm.artCover = this.imgUrl
       }).catch(err => {
         console.log(err)
       })
