@@ -3,33 +3,33 @@ import defaultSettings from '@/settings'
 const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 
 const state = {
-  showSettings: showSettings,
-  fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo,
-  loading: false
+    showSettings: showSettings,
+    fixedHeader: fixedHeader,
+    sidebarLogo: sidebarLogo,
+    loading: false
 }
 
 const mutations = {
-  CHANGE_SETTING: (state, { key, value }) => {
-    if (state.hasOwnProperty(key)) {
-      state[key] = value
+    CHANGE_SETTING: (state, { key, value }) => {
+        if (state.hasOwnProperty(key)) {
+            state[key] = value
+        }
+    },
+    SET_LOADING: (state, boolean) => {
+        state.loading = boolean
     }
-  },
-  SET_LOADING: (state, boolean) => {
-    state.loading = boolean
-  }
 }
 
 const actions = {
-  changeSetting({ commit }, data) {
-    commit('CHANGE_SETTING', data)
-  }
+    changeSetting({ commit }, data) {
+        commit('CHANGE_SETTING', data)
+    }
 }
 
 export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions
+    namespaced: true,
+    state,
+    mutations,
+    actions
 }
 

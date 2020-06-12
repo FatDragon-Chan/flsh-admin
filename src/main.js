@@ -21,6 +21,7 @@ import vPermission from '@/utils/v-permission' // 引入v-permission
 
 // 引入lodash
 import _ from 'lodash'
+
 Vue.prototype._ = _
 
 // 引入方法
@@ -59,8 +60,8 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
 })

@@ -10,14 +10,14 @@ import filterData from './modules/filterData'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  modules: {
-    app,
-    permission,
-    settings,
-    user,
-    filterData
-  },
-  getters
+    modules: {
+        app,
+        permission,
+        settings,
+        user,
+        filterData
+    },
+    getters
 })
 
 export default store

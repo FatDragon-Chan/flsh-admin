@@ -4,10 +4,25 @@
       <div class="app-search">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-input v-model="searchForm.keyword" :disabled="loading" size="mini" placeholder="请输入文章标题模糊搜索" @change="getData" clearable />
+            <el-input
+              v-model="searchForm.keyword"
+              :disabled="loading"
+              size="mini"
+              placeholder="请输入文章标题模糊搜索"
+              clearable
+              @change="getData"
+            />
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :xl="4">
-            <el-select v-model="searchForm.categoryId" :disabled="loading" clearable style="width: 100%" size="mini" placeholder="请选择文章分类" @change="getData">
+            <el-select
+              v-model="searchForm.categoryId"
+              :disabled="loading"
+              clearable
+              style="width: 100%"
+              size="mini"
+              placeholder="请选择文章分类"
+              @change="getData"
+            >
               <el-option
                 v-for="item in categoryData"
                 :key="item.catName"
@@ -31,7 +46,7 @@
               </el-image>
             </template>
           </el-table-column>
-          <el-table-column prop="artContent" label="文章内容" align="center" :show-overflow-tooltip="true"/>
+          <el-table-column prop="artContent" label="文章内容" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="catName" label="文章分类" align="center" />
           <el-table-column prop="createTime" label="创建时间" align="center" />
           <el-table-column prop="updateTime" label="更新时间" align="center" />
@@ -63,49 +78,50 @@ import { mapGetters } from 'vuex'
 import { articleStatus } from '@/utils/dictionary'
 import { getArticleList } from '@/api/blog'
 import { parseTime } from '@/utils/index'
-export default {
-  name: 'Index',
-  data() {
-    return {
-      searchForm: {
-        keyword: '',
-        status: 0,
-        categoryId: '',
-        page: 1,
-        pageSize: 10,
-        isLastPage: false,
-        lastPage: '',
-        total: 0
-      },
-      tableData: [],
-      articleStatus: articleStatus.slice(1)
-    }
-  },
-  computed: {
-    ...mapGetters(['categoryData', 'loading'])
-  },
-  mounted() {
-    this.getData()
-  },
-  methods: {
-    getData() {
-      getArticleList(this.searchForm).then(res => {
-        const { blogData, total, lastPage, isLastPage } = res.data
-        this.tableData = blogData.map(item => {
-          item.statusName = this.$getValueToKey('articleStatus', { value: item.artStatus })
-          item.create_time = parseTime(item.createTime)
-          item.update_time = parseTime(item.updateTime)
-          return item
-        })
-        this.searchForm.total = total
-        this.searchForm.lastPage = lastPage
-        this.searchForm.isLastPage = isLastPage
-      })
-    },
-    recycleArticle(row) {
 
+export default {
+    name: 'Index',
+    data() {
+        return {
+            searchForm: {
+                keyword: '',
+                status: 0,
+                categoryId: '',
+                page: 1,
+                pageSize: 10,
+                isLastPage: false,
+                lastPage: '',
+                total: 0
+            },
+            tableData: [],
+            articleStatus: articleStatus.slice(1)
+        }
+    },
+    computed: {
+        ...mapGetters(['categoryData', 'loading'])
+    },
+    mounted() {
+        this.getData()
+    },
+    methods: {
+        getData() {
+            getArticleList(this.searchForm).then(res => {
+                const { blogData, total, lastPage, isLastPage } = res.data
+                this.tableData = blogData.map(item => {
+                    item.statusName = this.$getValueToKey('articleStatus', { value: item.artStatus })
+                    item.create_time = parseTime(item.createTime)
+                    item.update_time = parseTime(item.updateTime)
+                    return item
+                })
+                this.searchForm.total = total
+                this.searchForm.lastPage = lastPage
+                this.searchForm.isLastPage = isLastPage
+            })
+        },
+        recycleArticle(row) {
+
+        }
     }
-  }
 }
 </script>
 
