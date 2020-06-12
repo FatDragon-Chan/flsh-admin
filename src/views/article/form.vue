@@ -1,74 +1,93 @@
 <template>
-  <div class="app-container">
-    <el-card class="app-card">
-      <el-form ref="articleForm" size="mini" :model="articleForm" label-width="100px" class="app-el-form">
-        <el-form-item label="文章标题">
-          <el-input v-model="articleForm.artTitle" :disabled="isDisabled" />
-        </el-form-item>
-        <el-form-item label="文章副标题">
-          <el-input v-model="articleForm.artDesc" :disabled="isDisabled" />
-        </el-form-item>
-        <el-form-item label="文章主图 ">
-          <div class="avatar-wrap">
-            <img v-if="imgUrl" :src="imgUrl" class="avatar">
-            <el-upload
-              v-else
-              class="avatar-upload"
-              accept="image/jpeg,image/gif,image/png,image/bmp"
-              action="fakerAction"
-              :show-file-list="false"
-              :http-request="uploadSectionFile"
-            >
-              <i class="el-icon-plus avatar-uploader-icon" />
-            </el-upload>
-          </div>
-        </el-form-item>
-        <el-form-item label="文章分类">
-          <el-select
-            v-model="articleForm.catId"
-            :disabled="isDisabled"
-            clearable
-            style="width: 100%"
-            size="mini"
-            placeholder="请选择文章分类"
-          >
-            <el-option
-              v-for="item in categoryData"
-              :key="item.catName"
-              :label="item.catName"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <div class="app-editor">
-            <mavon-editor
-              v-model="articleForm.artContent"
-              :disabled="isDisabled"
-              :editable="type !== 3"
-              :default-open="type === 3?'preview':'edit'"
-              :toolbars="toolbars"
-              code-style="monokai-sublime"
-              :subfield="false"
-            />
-          </div>
-        </el-form-item>
-        <el-form-item>
-          <el-button v-if="type===1" v-permission="['10011000']" type="primary" @click="submitArticle">立即创建
-          </el-button>
-          <el-button v-if="type===2" v-permission="['10011002']" type="primary" @click="submitArticle">保存
-          </el-button>
-          <el-button @click="goBack">返回</el-button>
-        </el-form-item>
-      </el-form>
+    <div class="app-container">
+        <el-card class="app-card">
+            <el-form ref="articleForm" size="mini" :model="articleForm" label-width="100px" class="app-el-form">
+                <el-form-item label="文章标题">
+                    <el-input v-model="articleForm.artTitle" :disabled="isDisabled" />
+                </el-form-item>
+                <el-form-item label="文章副标题">
+                    <el-input v-model="articleForm.artDesc" :disabled="isDisabled" />
+                </el-form-item>
+                <el-form-item label="文章主图 ">
+                    <div class="avatar-wrap">
+                        <img v-if="imgUrl" :src="imgUrl" class="avatar">
+                        <el-upload
+                            v-else
+                            class="avatar-upload"
+                            accept="image/jpeg,image/gif,image/png,image/bmp"
+                            action="fakerAction"
+                            :show-file-list="false"
+                            :http-request="uploadSectionFile"
+                        >
+                            <i class="el-icon-plus avatar-uploader-icon" />
+                        </el-upload>
+                    </div>
+                </el-form-item><el-form-item label="文章分类">
+                    <el-select
+                        v-model="articleForm.catId"
+                        :disabled="isDisabled"
+                        clearable
+                        style="width: 100%"
+                        size="mini"
+                        placeholder="请选择文章分类"
+                    >
+                        <el-option
+                            v-for="item in categoryData"
+                            :key="item.catName"
+                            :label="item.catName"
+                            :value="item.id"
+                        />
+                    </el-select>
+                </el-form-item>
+                <!--<el-form-item label="文章标签">
+                    <el-tag
+                        v-for="tag in dynamicTags"
+                        :key="tag"
+                        closable
+                        :disable-transitions="false"
+                        @close="handleClose(tag)"
+                    >
+                        {{ tag }}
+                    </el-tag>
+                    <el-input
+                        v-if="inputVisible"
+                        ref="saveTagInput"
+                        v-model="inputValue"
+                        class="input-new-tag"
+                        size="small"
+                        @keyup.enter.native="handleInputConfirm"
+                        @blur="handleInputConfirm"
+                    />
+                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                </el-form-item>-->
+                <el-form-item label="文章内容">
+                    <div class="app-editor">
+                        <mavon-editor
+                            v-model="articleForm.artContent"
+                            :disabled="isDisabled"
+                            :editable="type !== 3"
+                            :default-open="type === 3?'preview':'edit'"
+                            :toolbars="toolbars"
+                            code-style="monokai-sublime"
+                            :subfield="false"
+                        />
+                    </div>
+                </el-form-item>
+                <el-form-item>
+                    <el-button v-if="type===1" v-permission="['10011000']" type="primary" @click="submitArticle">立即创建
+                    </el-button>
+                    <el-button v-if="type===2" v-permission="['10011002']" type="primary" @click="submitArticle">保存
+                    </el-button>
+                    <el-button @click="goBack">返回</el-button>
+                </el-form-item>
+            </el-form>
 
-    </el-card>
-  </div>
+        </el-card>
+    </div>
 
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script>import { mapGetters } from 'vuex'
 import { toolbars } from '@/utils/dictionary'
 import { addOrUpdateArt, getArticleList } from '@/api/blog'
 
@@ -80,8 +99,7 @@ export default {
             articleForm: {
                 artTitle: '',
                 artDesc: '',
-                artContent: '',
-                artCover: '',
+                artContent: '', artCover: '',
                 catId: '',
                 artId: this.$route.params.id || ''
             },
@@ -98,7 +116,15 @@ export default {
     mounted() {
         this.type = this.$route.meta.type
         if (this.type !== 1) {
-            this.getArticleData({ artId: this.$route.params.id, page: 1, pageSize: 1 })
+            const reqData = {
+                artId: this.$route.params.id,
+                page: 1,
+                pageSize: 1
+            }
+            if (this.$route.query.status) {
+                reqData.status = 0
+            }
+            this.getArticleData(reqData)
         }
     },
     methods: {
@@ -138,6 +164,7 @@ export default {
                 console.log(err)
             })
         },
+        // 获取七牛云上传令牌
         getQiniuToken() {
             return new Promise((resolve, reject) => {
                 this.$http.post('/utils/getQiniuToken').then((res) => {
@@ -159,49 +186,47 @@ export default {
             })
         },
         goBack() {
-            this.$router.push({ name: 'ArticleList' })
+            this.$router.go(-1)
         }
-
     }
-
 }
 </script>
 
 <style lang="scss" scoped>
-    .article-conver {
-        width: 400px;
-    }
+.article-conver {
+    width: 400px;
+}
 
-    .avatar-wrap {
-        width: 400px;
-        overflow: hidden;
-        height: 250px;
-    }
+.avatar-wrap {
+    width: 400px;
+    overflow: hidden;
+    height: 250px;
+}
 
-    .avatar-upload {
-        width: 400px;
-        overflow: hidden;
-        height: 250px;
-        border: 1px solid #dadada;
-    }
+.avatar-upload {
+    width: 400px;
+    overflow: hidden;
+    height: 250px;
+    border: 1px solid #dadada;
+}
 
-    .avatar-upload:hover {
-        border: 1px solid #bababa;
-    }
+.avatar-upload:hover {
+    border: 1px solid #bababa;
+}
 
-    .avatar-upload /deep/ .el-upload {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+.avatar-upload /deep/ .el-upload {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    }
+}
 
-    .avatar-wrap .avatar {
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        cursor: pointer;
-    }
+.avatar-wrap .avatar {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    cursor: pointer;
+}
 </style>

@@ -1,4 +1,8 @@
-<template />
+<template>
+    <div>
+        我是表格组件
+    </div>
+</template>
 
 <script>
 export default {

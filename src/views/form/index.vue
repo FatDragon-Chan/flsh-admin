@@ -1,15 +1,15 @@
 <template>
-  <div class="app-container">
-    <el-tree
-      ref="tree"
-      :data="data"
-      show-checkbox
-      default-expand-all
-      node-key="id"
-      highlight-current
-    />
-    <el-button @click="handleCheckChange">获取所有半选中跟选中的nodes</el-button>
-  </div>
+    <div class="app-container">
+        <el-tree
+            ref="tree"
+            :data="data"
+            show-checkbox
+            default-expand-all
+            node-key="id"
+            highlight-current
+        />
+        <el-button @click="handleCheckChange">获取所有半选中跟选中的nodes</el-button>
+    </div>
 </template>
 
 <script>
@@ -88,8 +88,8 @@ export default {
 </script>
 
 <style scoped>
-    .line {
-        text-align: center;
-    }
+.line {
+    text-align: center;
+}
 </style>
 

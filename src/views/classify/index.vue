@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
-    <el-card class="app-card" />
-  </div>
+    <div class="app-container">
+        <el-card class="app-card" />
+    </div>
 </template>
 
 <script>
