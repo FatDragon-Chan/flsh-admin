@@ -70,6 +70,7 @@
                             :toolbars="toolbars"
                             code-style="monokai-sublime"
                             :subfield="false"
+                            :ishljs="true"
                         />
                     </div>
                 </el-form-item>

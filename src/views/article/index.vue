@@ -207,10 +207,10 @@ export default {
         enterForm(row, type) {
             switch (type) {
                 case 2:
-                    this.$router.push(`/article/edit/${row.artId}`)
+                    this.$router.push(`/article/edit/${row.id}`)
                     break
                 case 3:
-                    this.$router.push(`/article/detail/${row.artId}`)
+                    this.$router.push(`/article/detail/${row.id}`)
                     break
             }
         }
