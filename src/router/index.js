@@ -156,6 +156,19 @@ export const asyncRoutes = [
             }
         ]
     },
+    {
+        path: '/settings',
+        component: Layout,
+        meta: { roles: ['1003'] },
+        children: [
+            {
+                path: 'index',
+                name: 'Settings',
+                component: () => import('@/views/settings/index'),
+                meta: { title: '设置', icon: 'example', roles: ['10031000'] }
+            }
+        ]
+    },
     // {
     //   path: '/nested',
     //   component: Layout,
